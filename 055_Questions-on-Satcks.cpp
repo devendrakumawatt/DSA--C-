@@ -2,6 +2,185 @@
 #include<stack>
 using namespace std;
 
+							// ** Find Minimum cost for valid expression **
+int findMinimumCost(string str){
+	// odd condition
+	if(str.length()%2 == 1){
+		return -1;
+	}
+
+	stack<char> s;
+	for(int i=0; i<str.length(); i++){
+		char ch = str[i];
+
+		if(ch == '{'){
+			s.push(ch);
+		}
+		else{
+			// ch is closed brace
+			if(!s.empty() && s.top() == '{'){
+				s.pop();
+			}
+			else{
+				s.push(ch);
+			}
+		}
+	}
+	// stack contains invalid expression
+	int a = 0, b = 0;
+	while(!s.empty()){
+		if(s.top() == '{'){
+			b++;
+		}
+		else{
+			a++;
+		}
+		s.pop();
+	}
+	int ans = (a+1)/2 + (b+1)/2;
+	return ans;
+}
+
+
+int main(){
+	string str = "}}}}{{{{";
+
+	cout << "Given expression : " << str << endl;
+
+	int ans = findMinimumCost(str);
+	cout << "Minimum Cost for valid expression is : " << ans << endl;
+}
+
+
+
+
+
+
+
+
+
+
+/*						// ** Find Redundant brackets **
+
+bool findRedundantBrackets(string &str){
+	stack<char> s;
+	for(int i=0; i<str.length(); i++){
+		char ch = str[i];
+
+		if(ch == '(' || ch == '+' || ch == '-' || ch == '*' || ch == '/'){
+			s.push(ch);
+		}
+		else{
+			// ch yaa toh ')' hai yaa lowercase letter
+			if(ch == ')'){
+				bool isRedundant = true;
+				while(s.top() != '('){
+					char top = s.top();
+					if(top == '+'|| top == '-' || top == '*' || top == '/'){
+						isRedundant = false;
+					}
+					s.pop();
+				}
+				if(isRedundant == true){
+					return true;
+				}
+				s.pop();
+			}
+		}
+	}
+	return false;
+}
+
+
+int main(){
+	string str = "((a*(b+c)))";
+
+	cout << "Given expression : " << str << endl;
+
+	if(findRedundantBrackets(str)){
+		cout << "Expression have redundant brackets" << endl;
+	}
+	else{
+		cout << "Expression do not have redundant brackets" << endl;
+	}
+
+}
+*/
+
+
+
+
+
+
+
+
+
+/*					// ** Sort a stack **
+void sortedInsert(stack<int> &st, int num){
+	// base case
+	if(st.empty() || (!st.empty() && st.top() < num)){
+		st.push(num);
+		return;
+	}
+
+	int n = st.top();
+	st.pop();
+
+	// recursive call
+	sortedInsert(st, num);
+	st.push(n);
+}
+
+void sortStack(stack<int> &s){
+	// base case
+	if(s.empty()){
+		return;
+	}
+
+	int num = s.top();
+	s.pop();
+
+	// recursive call
+	sortStack(s);
+
+	sortedInsert(s, num);
+}
+
+int main(){
+	stack<int> s;
+	s.push(5);
+	s.push(-2);
+	s.push(9);
+	s.push(-7);
+	s.push(3);
+
+	stack<int> temp = s;
+	cout << "Given stack : ";
+	while(!temp.empty()){
+        cout << temp.top() << " ";
+        temp.pop();
+    }
+    cout << endl;
+
+    sortStack(s);
+
+    cout << "Sorted stack : ";
+	while(!s.empty()){
+        cout << s.top() << " ";
+        s.pop();
+    }
+    cout << endl;
+
+}
+*/
+
+
+
+
+
+
+/* 				// ** Reversed the stack using recursion **
+
 void insertAtBottom(stack<int> &rev, int x){
 	// base case
 	if(rev.empty()){
@@ -57,6 +236,7 @@ int main(){
     cout << endl;	
 
 }
+*/
 
 
 
@@ -110,7 +290,7 @@ int main(){
     }
     cout << endl;
 }
-*/
+
 
 
 
