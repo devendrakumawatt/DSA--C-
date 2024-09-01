@@ -6,7 +6,7 @@
 using namespace std;
 
 
-/*						// ** Reverse Queue **
+						// ** Reverse Queue **
 
 queue<int> rev(queue<int> q){
 	stack<int> s;
@@ -51,7 +51,7 @@ int main(){
 	printQueue(q);
 
 }
-*/
+
 
 
 
@@ -230,7 +230,7 @@ int main(){
 
 
 
-							// ** Circular Tour **
+/*							// ** Circular Tour **
 
 
 struct petrolPump {
@@ -278,3 +278,189 @@ int main(){
 
     cout << "Index to start tour: " << sol.tour(pump1, n1) << endl;
 }
+*/
+
+
+
+
+
+/*									// ** 'K'-Queues in an array
+
+class Kqueue {
+public:
+	int n;
+	int k;
+	int *front;
+	int *rear;
+	int *arr;
+	int freespot;
+	int *next;
+
+	Kqueue(int  n, int k){
+		this->n = n;
+		this->k = k;
+		front = new int[k];
+		rear = new int[k];
+
+		for(int i=0; i<k; i++){
+			front[i] = -1;
+			rear[i] = -1;
+		}
+
+		next = new int[n];
+		for(int i=0; i<n; i++){
+			next[i] = i+1;
+		}
+		next[n-1] = -1;
+
+		arr = new int[n];
+		freespot = 0;
+	}
+
+	void enqueue(int data, int qn){
+		// overflow checck
+		if(freespot == -1){
+			cout << "No empty space is present" << endl;
+		}
+
+		// first free index
+		int index = freespot;
+
+		// update freespot
+		freespot = next[index];
+
+		// check whether first element
+		if(front[qn-1] == -1){
+			front[qn-1] = index;
+		}
+		else{
+			// link new element to the prev element
+			next[rear[qn-1]] = index;
+		}
+
+		// update next
+		next[index] = -1;
+
+		// update rear
+		rear[qn-1] = index;
+
+		// push element
+		arr[index] = data;
+	}
+
+	int dequeue(int qn){
+		// underflow
+		if(front[qn-1] == -1){
+			cout << "Queue underflow" << endl;
+			return -1;
+		}
+		
+		// find index to pop
+		int index = front[qn-1];
+
+		// front update
+		front[qn-1] = next[index];
+
+		// freespot manage
+		next[index] = freespot;
+		freespot = index;
+
+		return arr[index];
+	}
+
+	~Kqueue() {
+        delete[] front;
+        delete[] rear;
+        delete[] arr;
+        delete[] next;
+    }
+};
+
+
+int main(){
+	Kqueue kq(10, 3);
+
+    kq.enqueue(10, 1);
+    kq.enqueue(20, 1);
+    kq.enqueue(30, 2);
+    kq.enqueue(40, 3);
+
+    cout << "Dequeued from queue 1: " << kq.dequeue(1) << endl;
+    cout << "Dequeued from queue 2: " << kq.dequeue(2) << endl;
+    cout << "Dequeued from queue 3: " << kq.dequeue(3) << endl;
+
+    cout << "Dequeued from queue 1: " << kq.dequeue(1) << endl;
+    cout << "Dequeued from queue 1: " << kq.dequeue(1) << endl;
+}
+*/
+
+
+
+
+
+/*							// ** Sum of maximum and minimum element of all sub-arrays of size k **
+
+int solve(int *arr, int n, int k){
+	deque<int> maxi(k);
+	deque<int> mini(k);
+
+	// addition of first k size window
+	for(int i=0; i<k; i++){
+
+		while(!maxi.empty() && arr[maxi.back()] <= arr[i]){
+			maxi.pop_back();
+		}
+
+		while(!mini.empty() && arr[mini.back()] >= arr[i]){
+			mini.pop_back();
+		}
+
+		maxi.push_back(i);
+		mini.push_back(i);
+	}
+
+	int ans = 0;
+	for(int i=k; i<n; i++){
+		ans = ans + arr[maxi.front()] + arr[mini.front()];
+
+		// next window
+		// removal
+		while(!maxi.empty() && i - maxi.front() >= k){
+			maxi.pop_front();
+		}
+
+		while(!mini.empty() && i - mini.front() >= k){
+			mini.pop_front();
+		}
+
+		// addition
+		while(!maxi.empty() && arr[maxi.back()] <= arr[i]){
+			maxi.pop_back();
+		}
+
+		while(!mini.empty() && arr[mini.back()] >= arr[i]){
+			mini.pop_back();
+		}
+
+		maxi.push_back(i);
+		mini.push_back(i);
+	}
+
+	// make sure to consider last window
+	ans = ans + arr[maxi.front()] + arr[mini.front()];
+	return ans;
+
+}
+
+int main(){
+	int arr[7] = {2, 5, -1, 7, -3, -1, -2};
+	int k = 4;
+
+	cout << "Given Array : ";
+	for(int i=0; i<7; i++){
+		cout << arr[i] << " ";
+	}cout<<endl;
+
+	cout << "Sum of max and min of all sub-arrays of size-4 : " << solve(arr, 7, k) << endl;
+}
+*/
